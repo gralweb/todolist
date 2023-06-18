@@ -1,17 +1,19 @@
-// import { useState } from 'react'
-import './App.css'
+import Footer from "./components/UI/Footer"
+import Header from "./components/UI/Header"
+import Main from "./components/UI/Main"
 
-function App() {
-  // const [count, setCount] = useState(0)
-  return (
-    <>
-      <div className="min-h-screen flex justify-center items-center">
-        <h1 className="text-3xl font-bold text-blue-600">
-          Install & Setup Vite + React + Typescript + Tailwind CSS 3
-        </h1>
-      </div>
-    </>
-  )
+const App = () => {
+    return (
+        <>
+            <section>
+				<Header/>
+
+				<Main/>
+				
+				<Footer />
+			</section>
+        </>
+    )
 }
 
 export default App
