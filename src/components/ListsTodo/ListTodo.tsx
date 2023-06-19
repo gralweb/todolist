@@ -1,15 +1,17 @@
 import CardTodo from "../Todo/CardTodo"
 import { Todo } from "../../interfaces/todo"
-import { ReactNode, useEffect, useState } from "react"
-import { updateTodoInLocalStorage } from "../../services/updateTodo"
+import { ReactNode, useContext, useEffect, useState } from "react"
+import { TodoContext, TodoContextType } from "../../context/todoContext"
 
-const ListTodo = (props: { 
-		title: string, check: boolean, todos: Array<Todo>,
-		setTodos: Function, setFormEditTodoOpenState: Function, setTodoId: Function
-	}) => {
+type ListTodoProps = {
+	title:string,
+	check:boolean,
+	setTodoId: Function,
+	setFormEditTodoOpenState: Function
+}
 
-	const { title, check, todos, setTodos, setFormEditTodoOpenState, setTodoId } = props
-
+const ListTodo : React.FC<ListTodoProps> = ({title, check, setFormEditTodoOpenState, setTodoId}) => {
+	const { todos, updateTodo } = useContext(TodoContext) as TodoContextType
 	const [todosCards, setTodosCards] = useState<ReactNode>([])
 	
 	// Filtrar los todos que no estan eliminados y que esten en completos o no para mostrar en el lugar correcto 
@@ -26,9 +28,7 @@ const ListTodo = (props: {
 		const cards: Array<ReactNode> = filterTodosByCheckAndDelete().map((item: Todo) => (
 			<CardTodo 
 				key={item.id}
-				title={item.title}
-				content={item.content}
-				check={item.check} id={item.id} delete={item.delete}
+				todo={item}
 				handlerCheckTodo={handlerCheckTodo} handlerDeleteTodo={handlerDeleteTodo}
 				setFormEditTodoOpenState={setFormEditTodoOpenState} setTodoId={setTodoId}
 			/>
@@ -43,13 +43,8 @@ const ListTodo = (props: {
 			item.id === id
 		))
 
-		const todosListNews: Array<Todo> = todos.filter((item: Todo) => (
-			item.id !== id
-		))
-
 		todo.check = !todo.check
-		setTodos([todo, ...todosListNews])
-		updateTodoInLocalStorage([todo, ...todosListNews])
+		updateTodo(todo)
 	}
 	
 	// Manejar el estado de Todo - enviar al historial de eliminados
@@ -58,13 +53,9 @@ const ListTodo = (props: {
 			item.id === id
 		))
 
-		const todosListNews: Array<Todo> = todos.filter((item: Todo) => (
-			item.id !== id
-		))
-
 		todo.delete = !todo.delete
-		setTodos([todo, ...todosListNews])
-		updateTodoInLocalStorage([todo, ...todosListNews])
+		updateTodo(todo)
+		
 	}
 
 	useEffect(() => {
