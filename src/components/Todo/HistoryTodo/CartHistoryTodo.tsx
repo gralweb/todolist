@@ -1,11 +1,16 @@
+import { Todo } from '../../../interfaces/todo'
 import CardHistoryOptionsTodo from './CardHistoryOptionsTodo'
 
-const CardHistoryTodo = (props: { 
-		title: string, content: string, id: string, check: boolean
-		handlerRestoreTodo: Function, handlerDeleteTodo: Function, setFormEditTodoOpenState: Function, setTodoId: Function
-	}) => {
+type CardHistoryTodoProps = {
+	todo: Todo,
+	setTodoId: Function,
+	handlerRestoreTodo: Function,
+	handlerDeleteTodo: Function,
+	setFormEditTodoOpenState: Function,
+}
 
-	const { title, content, id, check, handlerRestoreTodo, handlerDeleteTodo, setFormEditTodoOpenState, setTodoId } = props
+const CardHistoryTodo: React.FC<CardHistoryTodoProps> = ({todo, handlerRestoreTodo, handlerDeleteTodo, setFormEditTodoOpenState, setTodoId}) => {
+	const { title, content, id, check } = todo
 
 	// Manejar el envio datos del formulario para la edicion de todos desde el historial de borrados
 	const handlerFormEditTodo = ():void => {
