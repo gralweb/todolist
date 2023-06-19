@@ -1,17 +1,22 @@
 import Footer from "./components/UI/Footer"
 import Header from "./components/UI/Header"
 import Main from "./components/UI/Main"
+import TodoProvider from "./context/todoContext"
+import { getTodosFromLocalStorage } from "./services/getTodos"
+
 
 const App = () => {
     return (
         <>
-            <section>
-				<Header/>
+            <TodoProvider todosData={getTodosFromLocalStorage()} >
+                <section>
+                    <Header/>
 
-				<Main/>
-				
-				<Footer />
-			</section>
+                    <Main/>
+                    
+                    <Footer />
+                </section>
+            </TodoProvider>
         </>
     )
 }
