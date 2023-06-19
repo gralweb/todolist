@@ -1,7 +1,13 @@
 import { ReactNode } from "react"
 
-const FloatingButton = (props: { children: ReactNode, title: string, visibilityState: boolean, handlerVisibility: Function }) => {
-	const { children, title, visibilityState, handlerVisibility } = props
+type FloatingButtonProps = {
+	children:ReactNode,
+	title:string,
+	visibilityState:boolean,
+	handlerVisibility:(state: boolean) => void
+}
+
+const FloatingButton: React.FC<FloatingButtonProps>  = ({ children, title, visibilityState, handlerVisibility }) => {
 	return (
 		<>
 			<button 
