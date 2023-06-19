@@ -1,11 +1,15 @@
 import FormTodo from "../../FormTodo"
 import { Todo } from '../../../interfaces/todo'
-import { useEffect, useState } from "react"
-import { updateTodoInLocalStorage } from "../../../services/updateTodo"
+import { useContext } from "react"
+import { TodoContext, TodoContextType } from "../../../context/todoContext"
 
-const EditTodo = (props: {todos: Array<Todo>, setTodos: Function, todoId: string, setFormEditTodoOpenState: Function}) => {
-	const { todos, setTodos, todoId, setFormEditTodoOpenState } = props
-	const [todo, setTodo] = useState({title:'', content:'', check: false, delete: false})
+type EditTodoProps = {
+	todoId:string,
+	setFormEditTodoOpenState: Function,
+}
+
+const EditTodo: React.FC<EditTodoProps> = ({todoId, setFormEditTodoOpenState}) => {
+	const { todos, updateTodo } = useContext(TodoContext) as TodoContextType
 
 	// Filtrar todo por id para la edicion
 	const todoFilterById = (id: string): Todo => {
@@ -18,25 +22,14 @@ const EditTodo = (props: {todos: Array<Todo>, setTodos: Function, todoId: string
 
 	// Manejar el envio datos del formulario para la edicion de todos
 	const handlerTodoForm = (todoForm: Todo):void => {
-		const filterTodos = todos.filter((item: Todo) => (
-			item.id !== todoId
-		))
-
-		setTodos([todoForm, ...filterTodos])
-		updateTodoInLocalStorage([todoForm, ...filterTodos])
+		updateTodo(todoForm)
 	}
 
-	useEffect(() => {
-		// Enviar los datos del todo al estado para manejar la informacion
-		setTodo(todoFilterById(todoId))
-	}, [todoId])
-	
 	return (
 		<>
 			<FormTodo 
-				title='Editar' title_todo={todo.title} content_todo={todo.content}
-				id_todo={todoId} check_todo={todo.check} delete_todo={todo.delete}
-				setTodo={handlerTodoForm} handlerVisibility={setFormEditTodoOpenState}
+				title='Editar' todo={todoFilterById(todoId)}
+				handlerForm={handlerTodoForm} handlerVisibility={setFormEditTodoOpenState}
 			/>
 		</>
 	)
