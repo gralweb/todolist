@@ -1,5 +1,11 @@
-const CardOptionsTodo = (props: { check: boolean, id: string, handlerCheckTodo: Function, handlerDeleteTodo: Function }) => {
-	const { check, id, handlerCheckTodo, handlerDeleteTodo } = props
+type CardOptionsTodo = {
+	check: boolean,
+	id: string,
+	handlerCheckTodo: Function,
+	handlerDeleteTodo: Function
+}
+
+const CardOptionsTodo: React.FC<CardOptionsTodo> = ({ check, id, handlerCheckTodo, handlerDeleteTodo }) => {
 
 	return (
 		<>
