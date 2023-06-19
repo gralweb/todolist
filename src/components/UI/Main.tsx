@@ -1,14 +1,14 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import ListsTodo from "../ListsTodo"
 import AddTodo from "../Todo/AddTodo"
 import EditTodo from "../Todo/EditTodo"
 import ListHistoryTodo from "../Todo/HistoryTodo"
 import FloatingButton from "./FloatingButton"
 import ViewVoidTodo from "../Todo/ViewVoidTodo"
-import { getTodosFromLocalStorage } from '../../services/getTodos'
+import { TodoContext, TodoContextType } from "../../context/todoContext"
 
-const Main = () => {
-	const [todos, setTodos] = useState(getTodosFromLocalStorage())
+const Main: React.FC = () => {
+	const { todos } = useContext(TodoContext) as TodoContextType
 	const [todoId, setTodoId] = useState('')
 	const [formAddTodoOpenState, setFormAddTodoOpenState] = useState(false)
 	const [formEditTodoOpenState, setFormEditTodoOpenState] = useState(false)
@@ -20,7 +20,7 @@ const Main = () => {
 				{
 					// Validacion para saber si se puede mostrar el formulario de añadir Todo
 					formAddTodoOpenState ?
-					(<AddTodo todos={todos} setTodos={setTodos} setFormAddTodoOpenState={setFormAddTodoOpenState} />) :
+					(<AddTodo setFormAddTodoOpenState={setFormAddTodoOpenState} />) :
 					null
 				}
 
@@ -28,7 +28,7 @@ const Main = () => {
 					// Validacion para saber si existen Datos de Todo y mostrar una vista respectiva al caso
 					todos.length ?
 					(<ListsTodo 
-						todos={todos} setTodos={setTodos} setTodoId={setTodoId}
+						setTodoId={setTodoId}
 						setFormEditTodoOpenState={setFormEditTodoOpenState}
 					/>) :
 					(<ViewVoidTodo />)
@@ -37,7 +37,7 @@ const Main = () => {
 				{
 					// Validacion para saber si se puede mostrar el formulario de Edicion de Todo
 					formEditTodoOpenState ?
-					(<EditTodo todos={todos} setTodos={setTodos} todoId={todoId} setFormEditTodoOpenState={setFormEditTodoOpenState} />) :
+					(<EditTodo todoId={todoId} setFormEditTodoOpenState={setFormEditTodoOpenState} />) :
 					null
 				}
 				
@@ -59,7 +59,7 @@ const Main = () => {
 					// Validacion para saber si se puede mostrar el historial de Todos Eliminados
 					historyTodoOpenState ?
 					(<ListHistoryTodo
-						todos={todos} setTodos={setTodos} setTodoId={setTodoId}
+						setTodoId={setTodoId}
 						setFormEditTodoOpenState={setFormEditTodoOpenState}
 					/>) :
 					null
