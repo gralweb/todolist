@@ -1,19 +1,22 @@
+import { useContext } from "react"
 import FormTodo from "../../FormTodo"
 import { Todo } from '../../../interfaces/todo'
-import { setTodosToLocalStorage } from '../../../services/setTodo'
+import { TodoContext, TodoContextType } from "../../../context/todoContext"
 
-const AddTodo = (props: {todos: Array<Todo>, setTodos: Function, setFormAddTodoOpenState: Function}) => {
-	const { todos, setTodos, setFormAddTodoOpenState } = props
+type AddTodoProps = {
+	setFormAddTodoOpenState: Function
+}
 
+const AddTodo: React.FC<AddTodoProps> = ({setFormAddTodoOpenState}) => {
+	const { setTodo } = useContext(TodoContext) as TodoContextType
 	// Funcion para manejar el guardado de todos en el estado y en el localstorage
 	const handlerAddTodo = (todoForm: Todo) => {
-		setTodos([todoForm, ...todos])
-		setTodosToLocalStorage([todoForm, ...todos])
+		setTodo(todoForm)
 	}
 
 	return (
 		<>
-			<FormTodo title='Añadir' setTodo={handlerAddTodo} handlerVisibility={setFormAddTodoOpenState} />
+			<FormTodo title='Añadir' handlerForm={handlerAddTodo} handlerVisibility={setFormAddTodoOpenState} />
 		</>
 	)
 }
