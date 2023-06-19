@@ -1,11 +1,16 @@
+import { Todo } from '../../../interfaces/todo'
 import CardOptionsTodo from './CardOptionsTodo'
 
-const CardTodo = (props: { 
-		title: string, content: string, check: boolean, delete: boolean, id: string,
-		handlerCheckTodo: Function, handlerDeleteTodo: Function, setFormEditTodoOpenState: Function, setTodoId: Function
-	}) => {
+type CardTodoProps = {
+	todo: Todo,
+	setTodoId: Function,
+	handlerCheckTodo: Function,
+	handlerDeleteTodo: Function,
+	setFormEditTodoOpenState: Function,
+}
 
-	const { title, content, check, id, handlerCheckTodo, handlerDeleteTodo, setFormEditTodoOpenState, setTodoId } = props
+const CardTodo: React.FC<CardTodoProps> = ({todo, handlerCheckTodo, handlerDeleteTodo, setFormEditTodoOpenState, setTodoId}) => {
+	const { title, content, check, id } = todo
 
 	// Funcion para manejar la vista del formulario de edicion y pasar el id del todo a editar
 	const handlerFormEditTodo = ():void => {
